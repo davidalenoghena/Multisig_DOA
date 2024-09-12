@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Multisig_DOA {
     uint256 public quorum;
-    uint8 public noOfValidSigners;
+    uint256 public noOfValidSigners;
     uint256 public txCount;
 
     uint256 public updateQCount;
@@ -29,7 +29,7 @@ contract Multisig_DOA {
 
     struct UpdateQuorum {
         uint256 newQuorum;
-        uint8 noOfQSigners; //number of signers that have signed for the new quorum
+        uint256 noOfQSigners; //number of signers that have signed for the new quorum
         address[] listOfQSigners; //array to track the list of signers to update the quorum 
     }
 
@@ -39,7 +39,7 @@ contract Multisig_DOA {
     // signer -> transactionId -> bool (checking if an address has signed)
     mapping(address => mapping(uint256 => bool)) hasSigned;
 
-    constructor(uint8 _quorum, address[] memory _validSigners, address _tokenAddress) {
+    constructor(uint256 _quorum, address[] memory _validSigners, address _tokenAddress) {
         owner = msg.sender;
         token_Address = _tokenAddress;
 
@@ -54,7 +54,7 @@ contract Multisig_DOA {
             isValidSigner[_validSigners[i]] = true;
         }
 
-        noOfValidSigners = uint8(_validSigners.length);
+        noOfValidSigners = uint256(_validSigners.length);
 
         if (!isValidSigner[msg.sender]){
             isValidSigner[msg.sender] = true;
@@ -124,7 +124,7 @@ contract Multisig_DOA {
         }
     }
 
-    function updateQuorum (uint8 _newQuorum) external {
+    function updateQuorum (uint256 _newQuorum) external {
         require(isValidSigner[msg.sender], "not a valid signer");
         require(msg.sender != address(0), "address zero found");
         require(_newQuorum > 1, "must be greater than 1");
